@@ -43,4 +43,16 @@ def save_expenses(expenses: list[Expense]) -> None:
         writer.writerow(HEADERS)
         writer.writerows([e.to_row() for e in expenses])
                          
-     
+def filter_by_category(expenses: list[Expense], category: str) -> list[Expense]:
+    return [e for e in expenses if e.category.lower() == category.lower()]
+
+def filter_by_date(expenses: list[Expense], start: Date, end: Date) -> list[Expense]:
+    return [e for e in expenses if start <= e.date <= end]   
+
+def summarize_by_category(expenses : list[Expense]) -> dict[str, float]:
+    categories = {e.category.lower() for e in expenses}
+    return  {
+        cat: round(sum(e.amount for e in expenses if e.category.lower() == cat), 2)
+        for cat in categories
+
+    }  
