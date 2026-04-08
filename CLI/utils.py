@@ -14,3 +14,29 @@ def log_action(func):
         return result
     return wrapper
 
+def validate_expense(func):
+    @functools.wraps(func)
+    def wrapper(args):
+        errors =[]
+
+        try:
+            amount = float(args.amount)
+            if  amount<=0:
+                errors.append("Amount  must be greater than zero")
+        except ValueError:
+            errors.append(f"{args.amount}' is not a valid number")
+
+        if not args.category.strip():
+            errors.append("Category cannot be empty")
+
+        if not  args.note.strip():
+            errors.append("note cannot be empty")
+
+        if errors:
+            for e in errors:
+                print(f" error: {e}")
+            return
+        
+        return func(args)
+    
+    return wrapper 

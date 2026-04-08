@@ -1,8 +1,9 @@
 import argparse
 from expenses import load_expenses, save_expenses, Expense, filter_by_category, filter_by_date, summarize_by_category
-from utils import log_action
+from utils import log_action, validate_expense
 
 @log_action
+@validate_expense
 def cmd_add(args):
     expenses= load_expenses()
     new = Expense(

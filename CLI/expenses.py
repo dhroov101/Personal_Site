@@ -56,3 +56,21 @@ def summarize_by_category(expenses : list[Expense]) -> dict[str, float]:
         for cat in categories
 
     }  
+
+class CSVManager:
+    def __init__(self, path: Path, mode: str = "r"):
+        self.path = path
+        self.mode = mode
+        self._file = None
+
+    def __enter__(self):
+        self._file = open(self.path, self.mode, newline="", encoding="utf-8")
+        return self._file
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        if self._file:
+            self._file.close()
+        if exc_type is not None:
+            print(f"  file error: {exc_val}")
+            return True  # suppress the exception
+        return False
